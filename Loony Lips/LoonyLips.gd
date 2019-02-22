@@ -10,23 +10,35 @@ func _ready():
 	$Blackboard/TextBox.grab_focus() # Edit suggested by Keith/Udemy
 
 func _on_TextureButton_pressed():
-	var new_text = $Blackboard/TextBox.text
-	_on_TextBox_text_entered(new_text)
-	$Blackboard/TextBox.grab_focus()
+	if is_story_done():
+		get_tree().reload_current_scene()
+	else:
+		var new_text = $Blackboard/TextBox.text
+		_on_TextBox_text_entered(new_text)
+		$Blackboard/TextBox.grab_focus()
 	
 func _on_TextBox_text_entered(new_text):
 	player_words.append(new_text)
 	$Blackboard/TextBox.clear()
-	check_word_length()
+	next_action()
+
+func is_story_done():
+	return player_words.size() == prompt.size() # Passes this information to whatever function called this
 
 func prompt_player():
 	$Blackboard/StoryText.text = ("Can I have " + prompt[player_words.size()] + ", please?")
 	
-func check_word_length():
-	if player_words.size() == prompt.size():
+func next_action():
+	if is_story_done():
 		tell_story()
 	else:
 		prompt_player()
 
 func tell_story():
 	$Blackboard/StoryText.text = story % player_words
+	$Blackboard/TextureButton/ButtonLabel.text = "Again!"
+	end_game()
+	
+func end_game():
+	$Blackboard/TextBox.queue_free()
+	
