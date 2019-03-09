@@ -1,0 +1,7 @@
+{
+	"intro_text" : "Welcome to Loony Lips, a word-choosing game in MadLibs spirit! Enough talk, let's jam!"
+	,
+	"prompt" : "\nCan I have %s, please?"
+	,
+	"again" : "Again!"
+}
